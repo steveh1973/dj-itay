@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DJ ITAY</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Heebo:wght@300;400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #080808;
+      --white: #f5f5f0;
+      --neon: #00ffe0;
+      --neon2: #ff2d78;
+      --gray: #1a1a1a;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Heebo', sans-serif;
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--neon);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 36px; height: 36px;
+      border: 1.5px solid var(--neon);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: all 0.15s ease;
+      mix-blend-mode: difference;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 4px;
+      color: var(--neon);
+      text-shadow: 0 0 20px var(--neon);
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0.7;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--neon); }
+
+    /* HERO */
+    #hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 60%, #0d1f1e 0%, #080808 70%);
+    }
+
+    /* Animated grid lines */
+    .grid-lines {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,255,224,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,255,224,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 8s linear infinite;
+    }
+    @keyframes gridMove {
+      0% { transform: perspective(500px) rotateX(20deg) translateY(0); }
+      100% { transform: perspective(500px) rotateX(20deg) translateY(60px); }
+    }
+
+    /* Floating orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: float 6s ease-in-out infinite;
+    }
+    .orb1 { width: 400px; height: 400px; background: var(--neon); top: 10%; left: -10%; animation-delay: 0s; }
+    .orb2 { width: 300px; height: 300px; background: var(--neon2); bottom: 10%; right: -5%; animation-delay: 3s; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-30px); }
+    }
+
+    /* Equalizer bars */
+    .equalizer {
+      position: absolute;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+      align-items: flex-end;
+      height: 80px;
+      opacity: 0.3;
+    }
+    .eq-bar {
+      width: 4px;
+      background: linear-gradient(to top, var(--neon), var(--neon2));
+      border-radius: 2px;
+      animation: eq 0.8s ease-in-out infinite alternate;
+    }
+    .eq-bar:nth-child(1)  { height: 20px; animation-delay: 0.0s; }
+    .eq-bar:nth-child(2)  { height: 45px; animation-delay: 0.1s; }
+    .eq-bar:nth-child(3)  { height: 30px; animation-delay: 0.2s; }
+    .eq-bar:nth-child(4)  { height: 60px; animation-delay: 0.3s; }
+    .eq-bar:nth-child(5)  { height: 35px; animation-delay: 0.15s; }
+    .eq-bar:nth-child(6)  { height: 50px; animation-delay: 0.25s; }
+    .eq-bar:nth-child(7)  { height: 25px; animation-delay: 0.35s; }
+    .eq-bar:nth-child(8)  { height: 55px; animation-delay: 0.05s; }
+    .eq-bar:nth-child(9)  { height: 40px; animation-delay: 0.4s; }
+    .eq-bar:nth-child(10) { height: 20px; animation-delay: 0.2s; }
+    .eq-bar:nth-child(11) { height: 65px; animation-delay: 0.3s; }
+    .eq-bar:nth-child(12) { height: 30px; animation-delay: 0.1s; }
+    @keyframes eq {
+      0%   { transform: scaleY(0.3); }
+      100% { transform: scaleY(1.4); }
+    }
+
+    .hero-content { position: relative; z-index: 2; }
+
+    .hero-split {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 28vw;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.5s;
+    }
+    .hero-dj, .hero-itay {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 12vw, 11rem);
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+    .hero-dj {
+      -webkit-text-stroke: 2px var(--neon);
+      color: transparent;
+      text-shadow: 0 0 40px rgba(0,255,224,0.25);
+    }
+    .hero-itay {
+      color: var(--white);
+    }
+
+    .hero-tag {
+      font-size: 1rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--neon);
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.3s;
+    }
+
+
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(6rem, 18vw, 16rem);
+      line-height: 0.85;
+      letter-spacing: -2px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.5s;
+    }
+    .hero-title span {
+      display: block;
+      -webkit-text-stroke: 2px var(--neon);
+      color: transparent;
+      text-shadow: 0 0 60px rgba(0,255,224,0.3);
+    }
+    .hero-title .solid { color: var(--white); -webkit-text-stroke: 0; }
+
+    .hero-sub {
+      font-size: 1rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(245,245,240,0.5);
+      margin-top: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.7s;
+    }
+
+    .hero-cta {
+      margin-top: 48px;
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.9s;
+    }
+    .btn {
+      padding: 14px 36px;
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: var(--neon);
+      color: var(--black);
+    }
+    .btn-primary:hover {
+      background: var(--white);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0,255,224,0.3);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--white);
+      border: 1.5px solid rgba(245,245,240,0.3);
+    }
+    .btn-outline:hover {
+      border-color: var(--neon);
+      color: var(--neon);
+      transform: translateY(-3px);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ABOUT */
+    #about {
+      padding: 120px 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-label {
+      font-size: 0.7rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--neon);
+      margin-bottom: 20px;
+    }
+    .about-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+    .about-text {
+      color: rgba(245,245,240,0.6);
+      line-height: 1.8;
+      font-size: 1rem;
+      margin-bottom: 16px;
+    }
+    .about-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 40px;
+    }
+    .stat-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: var(--neon);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(245,245,240,0.4);
+      margin-top: 4px;
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-card {
+      background: var(--gray);
+      border: 1px solid rgba(0,255,224,0.1);
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .about-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--neon), var(--neon2));
+    }
+    .genres {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .genre-tag {
+      padding: 6px 16px;
+      border: 1px solid rgba(0,255,224,0.3);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--neon);
+      transition: all 0.2s;
+    }
+    .genre-tag:hover {
+      background: rgba(0,255,224,0.1);
+    }
+
+    /* GALLERY */
+    #gallery {
+      padding: 100px 40px;
+      background: var(--gray);
+    }
+    .section-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: var(--neon);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 12px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 1;
+      background: #111;
+      cursor: pointer;
+    }
+    .gallery-item:first-child {
+      grid-column: span 2;
+      aspect-ratio: 2/1;
+    }
+    .gallery-placeholder {
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: rgba(245,245,240,0.15);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: 1px dashed rgba(245,245,240,0.08);
+      transition: all 0.3s;
+    }
+    .gallery-placeholder svg { opacity: 0.2; }
+    .gallery-item:hover .gallery-placeholder {
+      color: rgba(0,255,224,0.4);
+      border-color: rgba(0,255,224,0.2);
+    }
+    .gallery-item:hover .gallery-placeholder svg { opacity: 0.5; }
+
+    .gallery-upload-note {
+      text-align: center;
+      margin-top: 30px;
+      color: rgba(245,245,240,0.3);
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+    }
+    .gallery-upload-note span { color: var(--neon); }
+
+    /* EVENTS */
+    #events {
+      padding: 100px 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .event-list { margin-top: 20px; }
+    .event-item {
+      display: grid;
+      grid-template-columns: 80px 1fr auto;
+      gap: 30px;
+      align-items: center;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(245,245,240,0.07);
+      transition: all 0.2s;
+    }
+    .event-item:hover { padding-right: 12px; }
+    .event-date {
+      text-align: center;
+      border: 1px solid rgba(0,255,224,0.2);
+      padding: 10px;
+    }
+    .event-day {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--neon);
+      line-height: 1;
+    }
+    .event-month {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(245,245,240,0.4);
+    }
+    .event-name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+    }
+    .event-location {
+      font-size: 0.8rem;
+      color: rgba(245,245,240,0.4);
+      letter-spacing: 1px;
+    }
+    .event-badge {
+      padding: 6px 14px;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: rgba(0,255,224,0.1);
+      color: var(--neon);
+      border: 1px solid rgba(0,255,224,0.2);
+      white-space: nowrap;
+    }
+
+    /* CONTACT */
+    #contact {
+      padding: 100px 40px;
+      background: var(--gray);
+      text-align: center;
+    }
+    .contact-inner {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .contact-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      margin-bottom: 16px;
+    }
+    .contact-sub {
+      color: rgba(245,245,240,0.5);
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+    .contact-form { display: flex; flex-direction: column; gap: 16px; text-align: right; }
+    .contact-form input,
+    .contact-form textarea {
+      background: rgba(245,245,240,0.04);
+      border: 1px solid rgba(245,245,240,0.1);
+      color: var(--white);
+      padding: 16px 20px;
+      font-family: 'Heebo', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border 0.2s;
+      width: 100%;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus { border-color: var(--neon); }
+    .contact-form textarea { height: 120px; resize: none; }
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder { color: rgba(245,245,240,0.25); }
+    .contact-form .btn { width: 100%; text-align: center; }
+
+    /* FOOTER */
+    footer {
+      padding: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(245,245,240,0.07);
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 4px;
+      color: var(--neon);
+    }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: rgba(245,245,240,0.2);
+      letter-spacing: 1px;
+    }
+    .social-links { display: flex; gap: 20px; }
+    .social-link {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(245,245,240,0.15);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(245,245,240,0.4);
+      text-decoration: none;
+      font-size: 0.75rem;
+      transition: all 0.2s;
+    }
+    .social-link:hover { border-color: var(--neon); color: var(--neon); }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      /* disable custom cursor on touch */
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
+
+      nav { padding: 14px 20px; }
+      .nav-logo { font-size: 1.5rem; }
+      .nav-links { display: none; }
+
+      /* Hero */
+      #hero { padding: 0 20px; }
+      .hero-split {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 28vw;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.5s;
+    }
+    .hero-dj, .hero-itay {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 12vw, 11rem);
+      line-height: 1;
+      letter-spacing: -2px;
+    }
+    .hero-dj {
+      -webkit-text-stroke: 2px var(--neon);
+      color: transparent;
+      text-shadow: 0 0 40px rgba(0,255,224,0.25);
+    }
+    .hero-itay {
+      color: var(--white);
+    }
+
+    .hero-tag { font-size: 0.65rem; letter-spacing: 3px; }
+  
+
+    .hero-title { font-size: clamp(5rem, 22vw, 8rem); }
+      .hero-sub { font-size: 0.75rem; letter-spacing: 2px; }
+      .hero-cta { flex-direction: column; align-items: center; gap: 12px; }
+      .btn { padding: 13px 28px; font-size: 0.8rem; width: 100%; text-align: center; }
+      .equalizer { display: none; }
+
+      /* About */
+      #about {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        padding: 70px 20px;
+      }
+      .about-title { font-size: 2.8rem; }
+      .about-stats { gap: 24px; }
+      .stat-num { font-size: 2.2rem; }
+      .about-card { padding: 24px; }
+      .genre-tag { font-size: 0.7rem; padding: 5px 12px; }
+
+      /* Gallery */
+      #gallery { padding: 70px 20px; }
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .gallery-item:first-child {
+        grid-column: span 2;
+        aspect-ratio: 16/9;
+      }
+      .gallery-placeholder { font-size: 0.65rem; gap: 8px; }
+      .gallery-placeholder svg { width: 24px; height: 24px; }
+
+      /* Events */
+      #events { padding: 70px 20px; }
+      .section-title { font-size: 2.5rem; }
+      .event-item {
+        grid-template-columns: 64px 1fr;
+        gap: 16px;
+        padding: 20px 0;
+      }
+      .event-badge { display: none; }
+      .event-name { font-size: 0.95rem; }
+
+      /* Contact */
+      #contact { padding: 70px 20px; }
+      .contact-title { font-size: 2.8rem; }
+      .contact-sub { font-size: 0.9rem; }
+      .contact-form input,
+      .contact-form textarea { font-size: 1rem; padding: 14px 16px; }
+
+      /* Footer */
+      footer {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+        padding: 30px 20px;
+      }
+    }
+
+    @media (max-width: 400px) {
+  
+
+    .hero-title { font-size: 5rem; }
+      .about-title { font-size: 2.3rem; }
+      .gallery-grid { grid-template-columns: 1fr; }
+      .gallery-item:first-child { grid-column: span 1; aspect-ratio: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">DJ ITAY</div>
+    <ul class="nav-links">
+      <li><a href="#about">אודות</a></li>
+      <li><a href="#gallery">גלריה</a></li>
+      <li><a href="#events">אירועים</a></li>
+      <li><a href="#contact">הזמנות</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="grid-lines"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+
+    <div class="equalizer">
+      <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+      <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+      <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+      <div class="eq-bar"></div><div class="eq-bar"></div><div class="eq-bar"></div>
+    </div>
+
+    <div class="hero-content">
+      <p class="hero-tag">הדיג'יי של המסיבה שלך</p>
+      <h1 class="hero-title">
+        <span>DJ</span>
+        <span class="solid">ITAY</span>
+      </h1>
+      <p class="hero-sub">פופ · היפ הופ · אלקטרוני · מיקס של הכל</p>
+      <div class="hero-cta">
+        <a href="#contact" class="btn btn-primary">הזמן עכשיו</a>
+        <a href="#gallery" class="btn btn-outline">גלריה</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="reveal">
+      <p class="about-label">מי אני</p>
+      <h2 class="about-title">הסאונד שמזיז את המסיבה</h2>
+      <p class="about-text">
+        דיג'יי שאוהב להדליק כל מסיבה עם מוזיקה שגורמת לכולם לזוז.
+      </p>
+      <p class="about-text">
+        מתמחה במיקסים מגוונים — מפופ ללהיטים, דרך היפ הופ ועד EDM. מתאים בדיוק למסיבות בריכה, ימי הולדת ואירועים של חברים.
+      </p>
+      <div class="about-stats">
+        <div>
+          <div class="stat-num">50+</div>
+          <div class="stat-label">מסיבות</div>
+        </div>
+        <div>
+          <div class="stat-num">5★</div>
+          <div class="stat-label">דירוג</div>
+        </div>
+        <div>
+          <div class="stat-num">100%</div>
+          <div class="stat-label">ריקודים</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="about-card">
+        <p class="about-label">סגנונות</p>
+        <p style="color: rgba(245,245,240,0.5); font-size: 0.9rem; margin-bottom: 8px;">מנגן הכל — בסגנון שמתאים לאירוע שלך</p>
+        <div class="genres">
+          <span class="genre-tag">פופ</span>
+          <span class="genre-tag">להיטים</span>
+          <span class="genre-tag">היפ הופ</span>
+          <span class="genre-tag">EDM</span>
+          <span class="genre-tag">אלקטרוני</span>
+          <span class="genre-tag">ישראלי</span>
+          <span class="genre-tag">בינלאומי</span>
+        </div>
+        <div style="margin-top: 30px; padding-top: 24px; border-top: 1px solid rgba(245,245,240,0.07);">
+          <p class="about-label">מתאים ל</p>
+          <div class="genres">
+            <span class="genre-tag">🏊 מסיבות בריכה</span>
+            <span class="genre-tag">🎂 ימי הולדת</span>
+            <span class="genre-tag">✡️ בר מצווה</span>
+            <span class="genre-tag">✨ בת מצווה</span>
+            <span class="genre-tag">🏠 מסיבות בית</span>
+            <span class="genre-tag">🎉 כיתתיות</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery">
+    <div class="section-header reveal">
+      <p class="section-label">רגעים</p>
+      <h2 class="section-title">גלריה</h2>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <span>תמונה ראשית</span>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/>
+          </svg>
+          <span>וידאו</span>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <span>תמונה</span>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <span>תמונה</span>
+        </div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-placeholder">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+            <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+            <polyline points="21 15 16 10 5 21"/>
+          </svg>
+          <span>תמונה</span>
+        </div>
+      </div>
+    </div>
+    <p class="gallery-upload-note reveal">פשוט החלף את המשבצות האפורות עם <span>תמונות אמיתיות</span> מהמסיבות 📸</p>
+  </section>
+
+  <!-- EVENTS -->
+  <section id="events">
+    <div class="section-header reveal" style="text-align:right;">
+      <p class="section-label">לוח שנה</p>
+      <h2 class="section-title">אירועים קרובים</h2>
+    </div>
+    <div class="event-list reveal">
+      <div class="event-item">
+        <div class="event-date">
+          <div class="event-day">14</div>
+          <div class="event-month">יוני</div>
+        </div>
+        <div>
+          <div class="event-name">מסיבת סוף שנה</div>
+          <div class="event-location">📍 תל אביב</div>
+        </div>
+        <div class="event-badge">הזמן מקום</div>
+      </div>
+      <div class="event-item">
+        <div class="event-date">
+          <div class="event-day">22</div>
+          <div class="event-month">יוני</div>
+        </div>
+        <div>
+          <div class="event-name">מסיבת בריכה פרטית</div>
+          <div class="event-location">📍 הרצליה</div>
+        </div>
+        <div class="event-badge">מאושר ✓</div>
+      </div>
+      <div class="event-item">
+        <div class="event-date">
+          <div class="event-day">04</div>
+          <div class="event-month">יולי</div>
+        </div>
+        <div>
+          <div class="event-name">יום הולדת VIP</div>
+          <div class="event-location">📍 רמת גן</div>
+        </div>
+        <div class="event-badge">פנוי</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner">
+      <div class="reveal">
+        <p class="section-label">בואו נדבר</p>
+        <h2 class="contact-title">הזמן את DJ ITAY</h2>
+        <p class="contact-sub">
+          רוצים דיג'יי שיהפוך את המסיבה שלכם לבלתי נשכחת?<br/>
+          השאירו פרטים ואחזור אליכם בהקדם 🎧
+        </p>
+        <div id="successMsg" style="display:none; text-align:center; padding:48px 20px; animation: fadeUp 0.6s ease forwards;">
+          <div style="font-size:3rem; margin-bottom:16px;">🎧</div>
+          <h3 style="font-family:'Bebas Neue',sans-serif; font-size:2.5rem; color:var(--neon); margin-bottom:12px;">ההודעה נשלחה!</h3>
+          <p style="color:rgba(245,245,240,0.6); font-size:1rem; line-height:1.7;">קיבלנו את הפרטים שלך.<br/>איתי יחזור אליך בהקדם 🔥</p>
+          <div style="margin-top:32px; padding:20px; border:1px solid rgba(0,255,224,0.15); display:inline-block; min-width:200px;">
+            <div style="font-size:0.7rem; letter-spacing:3px; text-transform:uppercase; color:rgba(245,245,240,0.3); margin-bottom:8px;">סטטוס</div>
+            <div style="color:var(--neon); font-size:0.9rem; font-weight:700; letter-spacing:1px;">✓ נשלח בהצלחה</div>
+          </div>
+        </div>
+        <div id="errorMsg" style="display:none; text-align:center; padding:12px; color:var(--neon2); font-size:0.85rem; border:1px solid rgba(255,45,120,0.2); margin-bottom:12px;">
+          ❌ משהו השתבש, נסו שוב
+        </div>
+        <form class="contact-form" id="contactForm">
+          <input type="text" name="שם מלא" placeholder="שם מלא" required />
+          <input type="tel" name="טלפון" placeholder="מספר טלפון" required />
+          <input type="text" name="סוג אירוע" placeholder="סוג האירוע (מסיבת בריכה, יום הולדת...)" />
+          <input type="date" name="תאריך" />
+          <textarea name="פרטים נוספים" placeholder="פרטים נוספים..."></textarea>
+          <button type="submit" class="btn btn-primary" id="submitBtn">שלח הודעה</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">DJ ITAY</div>
+    <div class="footer-copy">© 2025 DJ ITAY · כל הזכויות שמורות</div>
+    <div class="social-links">
+      <a href="#" class="social-link">IG</a>
+      <a href="#" class="social-link">TK</a>
+      <a href="#" class="social-link">YT</a>
+    </div>
+  </footer>
+
+  <script>
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx + 'px'; cursor.style.top = my + 'px'; });
+    function animRing() { rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animRing); }
+    animRing();
+
+    // Scroll reveal - mobile safe
+    const reveals = document.querySelectorAll('.reveal');
+    function checkReveal() {
+      reveals.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.92) {
+          el.classList.add('visible');
+        }
+      });
+    }
+    window.addEventListener('scroll', checkReveal, { passive: true });
+    window.addEventListener('resize', checkReveal);
+    checkReveal();
+    setTimeout(checkReveal, 300);
+
+    // Contact form
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+      contactForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submitBtn');
+        const errorMsg = document.getElementById('errorMsg');
+        btn.textContent = 'שולח...';
+        btn.disabled = true;
+        errorMsg.style.display = 'none';
+
+        try {
+          const res = await fetch('https://formspree.io/f/xeeddznk', {
+            method: 'POST',
+            body: new FormData(contactForm),
+            headers: { 'Accept': 'application/json' }
+          });
+          if (res.ok) {
+            contactForm.style.display = 'none';
+            document.getElementById('successMsg').style.display = 'block';
+          } else {
+            throw new Error();
+          }
+        } catch {
+          errorMsg.style.display = 'block';
+          btn.textContent = 'שלח הודעה';
+          btn.disabled = false;
+        }
+      });
+    }
+  </script>
+</body>
+</html>
